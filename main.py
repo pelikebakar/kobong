@@ -126,7 +126,7 @@ def run(playwright: Playwright) -> None:
         if betting_berhasil:
             pesan_sukses = (
                 "<b>[SUKSES]</b>\n"
-                f"🎯 <b>{jumlah_kombinasi}</b> kombinasi\n"
+                f"🎯 <b>{jumlah_kombinasi}</b> \n"
                 f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
                 f"💰SALDO KAMU Rp. <b>{saldo_value:,.2f}</b>\n"
                 f"⌚ {wib}"
