@@ -60,10 +60,8 @@ def run(playwright: Playwright) -> None:
 
         log_status("🌐", "Membuka browser...")
         browser = playwright.chromium.launch(headless=True)
-        context = browser.new_context(**playwright.devices["Pixel 7"])
-        context.route("**/*", lambda route, request:
-            route.abort() if request.resource_type == "image" else route.continue_()
-        )
+        context = browser.new_context()
+        page = context.new_page()
 
         page = context.new_page()
         page.goto("https://wdbos39652.com/#/index?category=lottery")
