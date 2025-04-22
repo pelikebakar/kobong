@@ -41,10 +41,10 @@ def kirim_telegram_log(status: str, pesan: str):
 def parse_saldo(saldo_text: str) -> float:
     print("🧪 SALDO RAW:", saldo_text)
     saldo_text = saldo_text.replace("Rp.", "").replace("Rp", "").strip()
-    saldo_text = saldo_text.replace(".", "")      # hapus pemisah ribuan
-    saldo_text = saldo_text.replace(",", ".")     # ubah koma jadi titik desimal
+    saldo_text = saldo_text.replace(",", "")  # Hapus koma (ribuan)
     print("🧪 SALDO CLEANED:", saldo_text)
     return float(saldo_text)
+
 
 def run(playwright: Playwright) -> None:
     try:
