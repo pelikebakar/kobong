@@ -75,7 +75,6 @@ def run(playwright: Playwright) -> None:
         log_status("🔐", "Login ke akun...")
         page1.locator("input#loginUser").wait_for()
         page1.locator("input#loginUser").fill(userid)
-        page1.locator("div:nth-child(4)").first.click()
         page1.locator("input#loginPsw").wait_for()
         page1.locator("input#loginPsw").fill(pw)
         page1.locator("div.login-btn").wait_for()
