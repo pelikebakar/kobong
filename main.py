@@ -80,12 +80,12 @@ def run(playwright: Playwright) -> None:
         page1.locator("input#loginPsw").fill(pw)
         page1.locator("div.login-btn").wait_for()
         page1.locator("div.login-btn").click()
+        try:
+            page1.get_by_role("link", name="Saya Setuju").wait_for(timeout=10000)
+            page1.get_by_role("link", name="Saya Setuju").click()
+        except:
+            print("⚠️ Tombol 'Saya Setuju' tidak muncul, lanjut...")
 
-        # ⛔ Hapus chat widget yang nutup tombol
-        page1.evaluate("document.getElementById('chat-widget-container')?.remove()")
-
-        page1.locator("a.jq-login-agree").wait_for()
-        page1.locator("a.jq-login-agree").click()
 
         # 💰 Cek saldo awal
         try:
