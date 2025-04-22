@@ -98,19 +98,6 @@ def run(playwright: Playwright) -> None:
             print("⚠️ Gagal ambil saldo:", e)
 
         total_bet_rupiah = jumlah_kombinasi * bet_kali * 1000
-        if saldo_value < total_bet_rupiah:
-            pesan_rendah = (
-                "<b>[GAGAL]</b>\n"
-                f"❌ Saldo terlalu rendah\n"
-                f"🎯 Butuh: Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
-                f"💰 Saat ini: Rp. <b>{saldo_value:,.2f}</b>\n"
-                f"⌚ {wib}"
-            )
-            log_status("❌", pesan_rendah)
-            kirim_telegram_log("GAGAL", pesan_rendah)
-            context.close()
-            browser.close()
-            return
 
         log_status("🧭", "Navigasi ke 5D Fast...")
         page1.locator("a[data-urlkey='5dFast']").wait_for()
