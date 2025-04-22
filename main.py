@@ -1,10 +1,8 @@
 from playwright.sync_api import Playwright, sync_playwright
-import time
 from datetime import datetime
 import pytz
 import requests
 import os
-import unicodedata
 
 userid = os.getenv("userid")
 pw = os.getenv("pw")
@@ -42,10 +40,9 @@ def kirim_telegram_log(status: str, pesan: str):
 
 def parse_saldo(saldo_text: str) -> float:
     print("🧪 SALDO RAW:", saldo_text)
-    saldo_text = unicodedata.normalize("NFKD", saldo_text)
     saldo_text = saldo_text.replace("Rp.", "").replace("Rp", "").strip()
-    saldo_text = saldo_text.replace(".", "")  # Hapus ribuan
-    saldo_text = saldo_text.replace(",", ".")  # Ganti desimal
+    saldo_text = saldo_text.replace(".", "")      # Hapus ribuan
+    saldo_text = saldo_text.replace(",", ".")     # Ganti koma ke titik
     print("🧪 SALDO CLEANED:", saldo_text)
     return float(saldo_text)
 
@@ -56,6 +53,7 @@ def run(playwright: Playwright) -> None:
         bet_raw = baca_file("bet.txt")
         bet_kali = float(bet_raw)
         jumlah_kombinasi = len(nomor_kombinasi.split('*'))
+        total_bet_rupiah = jumlah_kombinasi * bet_kali * 1000
         log_status("📬", f"Nomor ditemukan: {nomor_kombinasi} | Bet: {bet_raw}")
 
         log_status("🌐", "Membuka browser...")
@@ -63,7 +61,6 @@ def run(playwright: Playwright) -> None:
         context = browser.new_context()
         page = context.new_page()
 
-        page = context.new_page()
         page.goto("https://wdbos39652.com/#/index?category=lottery")
         page.get_by_role("img", name="close").click()
 
@@ -85,31 +82,24 @@ def run(playwright: Playwright) -> None:
         except:
             print("⚠️ Tombol 'Saya Setuju' tidak muncul, lanjut...")
 
-
         # 💰 Cek saldo awal
         try:
-            saldo_elemen = page1.locator("span.overage-num")
-            saldo_elemen.wait_for()
-            saldo_text = saldo_elemen.inner_text().strip()
+            saldo_text = page1.locator("span.overage-num").inner_text().strip()
             saldo_value = parse_saldo(saldo_text)
         except Exception as e:
             saldo_text = "tidak diketahui"
             saldo_value = 0.0
             print("⚠️ Gagal ambil saldo:", e)
 
-        total_bet_rupiah = jumlah_kombinasi * bet_kali * 1000
-
         log_status("🧭", "Navigasi ke 5D Fast...")
         page1.locator("a[data-urlkey='5dFast']").wait_for()
         page1.locator("a[data-urlkey='5dFast']").click()
-
         page1.locator("li.mode_full[data-tabkey='full']").wait_for()
         page1.locator("li.mode_full[data-tabkey='full']").click()
 
         log_status("🧾", "Mengisi form taruhan...")
         page1.locator("textarea#numinput").wait_for()
         page1.locator("textarea#numinput").fill(nomor_kombinasi)
-
         page1.locator("input#buy3d").wait_for()
         page1.locator("input#buy3d").fill(str(bet_raw))
 
@@ -126,9 +116,7 @@ def run(playwright: Playwright) -> None:
 
         # 💰 Cek saldo setelah betting
         try:
-            saldo_elemen = page1.locator("span.overage-num")
-            saldo_elemen.wait_for()
-            saldo_text = saldo_elemen.inner_text().strip()
+            saldo_text = page1.locator("span.overage-num").inner_text().strip()
             saldo_value = parse_saldo(saldo_text)
         except Exception as e:
             saldo_text = "tidak diketahui"
@@ -140,7 +128,7 @@ def run(playwright: Playwright) -> None:
                 "<b>[SUKSES]</b>\n"
                 f"🎯 <b>{jumlah_kombinasi}</b> kombinasi\n"
                 f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
-                f"💰SALDO KAMU Rp. <b>{saldo_text:,.2f}</b>\n"
+                f"💰SALDO KAMU Rp. <b>{saldo_value:,.2f}</b>\n"
                 f"⌚ {wib}"
             )
             log_status("✅", pesan_sukses)
@@ -149,8 +137,8 @@ def run(playwright: Playwright) -> None:
             pesan_gagal = (
                 "<b>[GAGAL]</b>\n"
                 f"❌ Gagal❗\n"
-				f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
-                f"💰 SALDO KAMU Rp. <b>{saldo_text:,.2f}</b>\n"
+                f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
+                f"💰 SALDO KAMU Rp. <b>{saldo_value:,.2f}</b>\n"
                 f"⌚ {wib}"
             )
             log_status("❌", pesan_gagal)
