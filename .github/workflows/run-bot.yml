@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "UTC Time: $(date -u '+%Y-%m-%d %H:%M:%S')"
           echo "WIB Time: $(TZ='Asia/Jakarta' date '+%Y-%m-%d %H:%M:%S')"
-          output=$(python indra.py)
+          output=$(python main.py)
           echo "$output"
           if echo "$output" | grep -q "✅"; then
             echo "✅ Workflow sukses"
