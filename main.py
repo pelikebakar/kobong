@@ -5,9 +5,7 @@ import pytz
 import requests
 import os
 import unicodedata
-from dotenv import load_dotenv
-
-load_dotenv()
+import html
 
 userid = os.getenv("userid")
 pw = os.getenv("pw")
@@ -40,15 +38,13 @@ def kirim_telegram_log(status: str, pesan: str):
                 print(f"Respon Telegram: {response.text}")
         except Exception as e:
             print("Error saat mengirim ke Telegram:", e)
-    else:
-        print("Token atau chat_id tidak tersedia.")
 
 def parse_saldo(saldo_text: str) -> float:
     print("🧪 SALDO RAW:", saldo_text)
     saldo_text = unicodedata.normalize("NFKD", saldo_text)
     saldo_text = saldo_text.replace("Rp.", "").replace("Rp", "").strip()
     saldo_text = saldo_text.replace(".", "")  # Hapus ribuan
-    saldo_text = saldo_text.replace(",", ".")  # Ganti desimal
+    saldo_text = saldo_text.replace(",", ".")  # Ganti desimal koma ke titik
     print("🧪 SALDO CLEANED:", saldo_text)
     return float(saldo_text)
 
@@ -69,7 +65,7 @@ def run(playwright: Playwright) -> None:
         )
 
         page = context.new_page()
-        page.goto("https://wdbos39652.com/#/index?category=lottery")
+        page.goto("https://depobos.com/#/index?category=lottery")
         page.get_by_role("img", name="close").click()
 
         with page.expect_popup() as popup_info:
@@ -79,10 +75,14 @@ def run(playwright: Playwright) -> None:
         log_status("🔐", "Login ke akun...")
         page1.locator("input#loginUser").wait_for()
         page1.locator("input#loginUser").fill(userid)
+        page1.locator("div:nth-child(4)").first.click()
         page1.locator("input#loginPsw").wait_for()
         page1.locator("input#loginPsw").fill(pw)
         page1.locator("div.login-btn").wait_for()
         page1.locator("div.login-btn").click()
+
+        # ⛔ Hapus chat widget yang nutup tombol
+        page1.evaluate("document.getElementById('chat-widget-container')?.remove()")
 
         page1.locator("a.jq-login-agree").wait_for()
         page1.locator("a.jq-login-agree").click()
@@ -175,7 +175,7 @@ def run(playwright: Playwright) -> None:
     except Exception as e:
         log_status("❌", "Terjadi kesalahan saat menjalankan script.")
         print("Detail error:", e)
-        kirim_telegram_log("GAGAL", f"<b>[GAGAL]</b>\n❌ Error: {str(e)}\n⌚ {wib}")
+        kirim_telegram_log("GAGAL", f"<b>[GAGAL]</b>\n❌ Error: {html.escape(str(e))}\n⌚ {wib}")
 
 with sync_playwright() as playwright:
     run(playwright)
