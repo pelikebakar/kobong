@@ -53,6 +53,7 @@ def run(playwright: Playwright) -> None:
         bet_raw = baca_file("bet.txt")
         bet_kali = float(bet_raw)
         jumlah_kombinasi = len(nomor_kombinasi.split('*'))
+        bet_per_nomor = bet_kali * 1000
         total_bet_rupiah = jumlah_kombinasi * bet_kali * 1000
         log_status("📬", f"Nomor ditemukan: {nomor_kombinasi} | Bet: {bet_raw}")
 
@@ -126,9 +127,9 @@ def run(playwright: Playwright) -> None:
         if betting_berhasil:
             pesan_sukses = (
                 "<b>[SUKSES]</b>\n"
-                f"🎯 <b>{jumlah_kombinasi}</b> \n"
-                f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
-                f"💰SALDO KAMU Rp. <b>{int(saldo_value):,}</b>\n"
+                f"🎯 TOTAL <b>{jumlah_kombinasi}</b> HARGA <b>{bet_per_nomor}</b>\n"
+                f"💸 BAYAR Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
+                f"💰 SALDO KAMU Rp. <b>{int(saldo_value):,}</b>\n"
                 f"⌚ {wib}"
             )
             log_status("✅", pesan_sukses)
@@ -136,9 +137,9 @@ def run(playwright: Playwright) -> None:
         else:
             pesan_gagal = (
                 "<b>[GAGAL]</b>\n"
-                f"❌ Gagal❗\n"
-                f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
-                f"💰SALDO KAMU Rp. <b>{int(saldo_value):,}</b>\n"
+                f"❌ TOTAL <b>{jumlah_kombinasi}</b> HARGA <b>{bet_per_nomor}</b>\n"
+                f"💸 BAYAR Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
+                f"💰 SALDO KAMU Rp. <b>{int(saldo_value):,}</b>\n"
                 f"⌚ {wib}"
             )
             log_status("❌", pesan_gagal)
