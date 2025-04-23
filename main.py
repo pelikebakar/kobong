@@ -128,7 +128,7 @@ def run(playwright: Playwright) -> None:
                 "<b>[SUKSES]</b>\n"
                 f"🎯 <b>{jumlah_kombinasi}</b> \n"
                 f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
-                f"💰SALDO KAMU Rp. <b>{saldo_value:,.2f}</b>\n"
+                f"💰SALDO KAMU Rp. <b>{int(saldo_value):,}</b>\n"
                 f"⌚ {wib}"
             )
             log_status("✅", pesan_sukses)
@@ -138,7 +138,7 @@ def run(playwright: Playwright) -> None:
                 "<b>[GAGAL]</b>\n"
                 f"❌ Gagal❗\n"
                 f"💸 Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
-                f"💰SALDO KAMU Rp. <b>{int(saldo_value):,}</b>"
+                f"💰SALDO KAMU Rp. <b>{int(saldo_value):,}</b>\n"
                 f"⌚ {wib}"
             )
             log_status("❌", pesan_gagal)
