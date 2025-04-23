@@ -95,12 +95,16 @@ def run(playwright: Playwright) -> None:
         log_status("🧭", "Navigasi ke 5D Fast...")
         page1.locator("a[data-urlkey='5dFast']").wait_for()
         page1.locator("a[data-urlkey='5dFast']").click()
-        page1.locator("li.mode_full[data-tabkey='full']").wait_for()
-        page1.locator("li.mode_full[data-tabkey='full']").click()
-        
-        # Tunggu sampai mode_diskon hilang dan mode_full muncul
-        page1.wait_for_selector("div.panel-mode.mode_diskon", state="detached", timeout=10000)
-        page1.wait_for_selector("div.panel-mode.mode_full", timeout=10000)
+        # Pastikan dulu 5D Fast sudah muncul
+        page1.locator("a[data-urlkey='5dFast']").wait_for()
+        page1.locator("a[data-urlkey='5dFast']").click()
+
+        # Klik FULL setelah terlihat
+        page1.get_by_text("FULL", exact=True).click()
+
+        # Tunggu sampai panel mode FULL tampil
+        page1.wait_for_selector("div.panel-mode.mode_full textarea#numinput", timeout=10000)
+
 
         log_status("🧾", "Mengisi form taruhan...")
         page1.locator("textarea#numinput").wait_for()
