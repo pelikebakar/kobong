@@ -93,8 +93,6 @@ def run(playwright: Playwright) -> None:
             print("⚠️ Gagal ambil saldo:", e)
 
         log_status("🧭", "Navigasi ke 5D Fast...")
-        page1.locator("a[data-urlkey='5dFast']").wait_for()
-        page1.locator("a[data-urlkey='5dFast']").click()
         # Pastikan dulu 5D Fast sudah muncul
         page1.locator("a[data-urlkey='5dFast']").wait_for()
         page1.locator("a[data-urlkey='5dFast']").click()
