@@ -97,6 +97,10 @@ def run(playwright: Playwright) -> None:
         page1.locator("a[data-urlkey='5dFast']").click()
         page1.locator("li.mode_full[data-tabkey='full']").wait_for()
         page1.locator("li.mode_full[data-tabkey='full']").click()
+        
+        # Tunggu sampai mode_diskon hilang dan mode_full muncul
+        page1.wait_for_selector("div.panel-mode.mode_diskon", state="detached", timeout=10000)
+        page1.wait_for_selector("div.panel-mode.mode_full", timeout=10000)
 
         log_status("🧾", "Mengisi form taruhan...")
         page1.locator("textarea#numinput").wait_for()
