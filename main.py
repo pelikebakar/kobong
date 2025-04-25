@@ -99,9 +99,10 @@ def run(playwright: Playwright) -> None:
 
         # Klik FULL setelah terlihat
         page1.get_by_text("FULL", exact=True).click()
-
-        # Tunggu sampai panel mode FULL tampil
-        page1.wait_for_selector("div.panel-mode.mode_full", timeout=10000)
+        page1.get_by_text("FULL", exact=True).click()
+        page1.get_by_text("FULL", exact=True).click()
+        page1.get_by_text("FULL", exact=True).click()
+        page1.get_by_text("FULL", exact=True).click()
 
         log_status("🧾", "Mengisi form taruhan...")
         page1.locator("#numinput").fill(nomor_kombinasi)
