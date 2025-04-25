@@ -101,12 +101,10 @@ def run(playwright: Playwright) -> None:
         page1.get_by_text("FULL", exact=True).click()
 
         # Tunggu sampai panel mode FULL tampil
-        page1.wait_for_selector("div.panel-mode.mode_full textarea#numinput", timeout=10000)
+        page1.wait_for_selector("div.panel-mode.mode_full", timeout=10000)
 
         log_status("🧾", "Mengisi form taruhan...")
-        page1.locator("textarea#numinput").wait_for()
-        page1.locator("textarea#numinput").fill(nomor_kombinasi)
-        page1.locator("input#buy3d").wait_for()
+        page1.locator("#numinput").fill(nomor_kombinasi)
         page1.locator("input#buy3d").fill(str(bet_raw))
 
         log_status("📨", "Mengirim taruhan...")
