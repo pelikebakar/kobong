@@ -4,6 +4,7 @@ from datetime import datetime
 import pytz
 import requests
 import os
+import time
 
 pw = os.getenv("pw")
 telegram_token = os.getenv("TELEGRAM_TOKEN")
@@ -82,6 +83,7 @@ def run(playwright: Playwright, situs: str, userid: str, bet_raw: str):
         page1.locator("a[data-urlkey='5dFast']").click()
         for _ in range(5):
             page1.get_by_text("FULL", exact=True).click()
+            time.sleep(1)
 
         page1.locator("#numinput").fill(nomor_kombinasi)
         page1.locator("input#buy3d").fill(str(bet_raw))
