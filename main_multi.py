@@ -86,7 +86,9 @@ def run(playwright: Playwright, situs: str, userid: str, bet_raw: str):
             time.sleep(1)
 
         page1.locator("#numinput").fill(nomor_kombinasi)
-        page1.locator("input#buy3d").fill(str(bet_raw))
+        time.sleep(1)
+        page1.locator("input#buy4d").fill(str(bet_raw))
+        time.sleep(1)
         page1.locator("button.jq-bet-submit").click()
 
         try:
