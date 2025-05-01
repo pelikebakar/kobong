@@ -54,7 +54,7 @@ def run(playwright: Playwright, situs: str, userid: str, bet_raw: str):
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context()
         page = context.new_page()
-        page.goto(situs)
+        page.goto(f"https://{situs}/#/index?category=lottery")
 
         page.get_by_role("img", name="close").click()
         with page.expect_popup() as popup_info:
@@ -102,7 +102,6 @@ def run(playwright: Playwright, situs: str, userid: str, bet_raw: str):
         if betting_berhasil:
             pesan_sukses = (
                 f"<b>[SUKSES]</b>\n"
-                f"🔗 {situs}\n"
                 f"👤 {userid}\n"
                 f"🎯 TOTAL <b>{jumlah_kombinasi}</b> HARGA <b>{int(bet_per_nomor):,}</b>\n"
                 f"💸 BAYAR Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
@@ -113,7 +112,6 @@ def run(playwright: Playwright, situs: str, userid: str, bet_raw: str):
         else:
             pesan_gagal = (
                 f"<b>[GAGAL]</b>\n"
-                f"🔗 {situs}\n"
                 f"👤 {userid}\n"
                 f"💸 BAYAR Rp. <b>{total_bet_rupiah:,.0f}</b>\n"
                 f"💰 SALDO KAMU Rp. <b>{saldo_value:,.0f}</b>\n"
